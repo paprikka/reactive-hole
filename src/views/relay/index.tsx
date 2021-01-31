@@ -3,10 +3,10 @@ import { Receive } from "./receive";
 import { Send } from "./send";
 
 const getID = () => window.location.pathname.split("/").slice(-1)[0] || null;
-type Mode = "sender" | "receiver";
-export const RelayView: FC = () => {
-  const [mode] = useState<Mode>(() => (getID() ? "receiver" : "sender"));
 
-  if (mode === "receiver") return <Receive />;
+export const RelayView: FC = () => {
+  const [id] = useState<string | null>(getID);
+
+  if (id) return <Receive senderPeerID={id} />;
   return <Send />;
 };
