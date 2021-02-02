@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import React, { FC, useState } from "react";
 import { Receive } from "./receive";
 import { Send } from "./send";
 

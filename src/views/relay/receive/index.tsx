@@ -2,12 +2,9 @@ import Peer from "peerjs";
 import React, { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button } from "../../../components/button";
-import { Hole } from "../../../components/hole";
-import { servers } from "../servers";
-
-import waiting from "./waiting.png";
-import catPaw from "./cat-paw.png";
 import { LinkButton } from "../../../components/link-button";
+import { servers } from "../servers";
+import waiting from "./waiting.png";
 
 const FullScreenContainer = styled.section`
   width: 100vw;
