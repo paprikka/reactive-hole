@@ -4,7 +4,8 @@ import { FullScreenContainer } from "../../../components/full-screen-container";
 import arrowDown from "./arrow-down.png";
 import dropItHere from "./drop-it-here.png";
 import { Hole } from "../../../components/hole";
-type DropZoneBaseProps = {
+import { AspectRatioContainer } from "../../../components/aspect-ratio-container";
+type DropZoneContainerProps = {
   isDraggingOver: boolean;
 };
 
@@ -16,28 +17,30 @@ const swing = keyframes`
       transform: translateY();
     }
     to {
-      transform: translateY(+30%);
+      transform: translateY(+20%);
     }
 `;
 
-const DropZoneBase = styled(FullScreenContainer)<DropZoneBaseProps>`
+const DropZoneContainer = styled(FullScreenContainer)<DropZoneContainerProps>`
   background: ${({ isDraggingOver }) => (isDraggingOver ? "yellow" : "white")};
-
+`;
+const DropZoneBase = styled(AspectRatioContainer)`
   .drop-it-here {
-    width: 15.4vw;
-    height: 14.5vw;
+    width: 100%;
+    height: 30%;
     background: url(${dropItHere});
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
   }
 
   .arrow-down {
-    width: 11.4vw;
-    height: 20.5vw;
+    width: 100%;
+    height: 40%;
     background: url(${arrowDown});
-    margin: 5vw 0 10vw;
-    background-size: contain;
+    background-size: 15%;
     background-repeat: no-repeat;
+    background-position: center;
 
     animation: ${swing} 0.7s 0s ease-in-out infinite alternate;
   }
@@ -83,13 +86,15 @@ export const DropZone: FC<DropZoneProps> = ({ onFile }) => {
 
   return (
     <>
-      <DropZoneBase isDraggingOver={isDraggingOver}>
-        <div className="drop-it-here" />
-        <div className="arrow-down" />
-        <Hole isActive={isDraggingOver} />
-        {/* <div className='arrow'/>
+      <DropZoneContainer isDraggingOver={isDraggingOver}>
+        <DropZoneBase>
+          <div className="drop-it-here" />
+          <div className="arrow-down" />
+          <Hole isActive={isDraggingOver} />
+          {/* <div className='arrow'/>
         <div className='tip'/> */}
-      </DropZoneBase>
+        </DropZoneBase>
+      </DropZoneContainer>
       <DropOverlay
         onDrop={handleDrop}
         onDragEnter={handleDragEnter}

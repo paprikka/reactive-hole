@@ -18,18 +18,24 @@ const swing = keyframes`
 
 const WaitingForConnectionBase = styled(FullScreenContainer)`
   .look-down {
-    width: 8.5vw;
-    height: 12vw;
+    width: calc(4.25rem * 0.8);
+    height: calc(6rem * 0.8);
+
     background: url(${lookDown});
     background-size: contain;
     background-repeat: no-repeat;
-    margin: 2vw 0 5vw;
+    margin: 1rem 0 3em;
     animation: ${swing} 0.5s 0s ease-in-out infinite alternate;
   }
 
   h2 {
-    font-size: 1rem;
+    text-align: center;
+    font-size: 1.25rem;
     user-select: text;
+
+    @media all and (min-width: 400px) {
+      font-size: 1.5rem;
+    }
   }
 `;
 

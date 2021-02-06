@@ -5,9 +5,13 @@ export const Button = styled.button`
   color: white;
   border: none;
   padding: 0.5em;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-family: inherit;
   font-weight: 600;
+
+  @media all and (min-width: 400px) {
+    font-size: 1.5rem;
+  }
 
   cursor: pointer;
 
