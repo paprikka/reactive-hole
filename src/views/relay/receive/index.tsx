@@ -107,11 +107,13 @@ export const Receive: FC<ReceiveProps> = ({ senderPeerID }) => {
             filename: data.filename as string,
           });
           setStep("complete");
+
+          connection.send({ type: "file:upload-complete" });
         }
       });
     });
   }, [senderPeerID, step]);
-  console.log(step);
+
   if (step === "waiting-for-approval")
     return <AcceptDownload onClick={() => setStep("init-download")} />;
   if (step === "init-download") return <Connecting />;

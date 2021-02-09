@@ -1,3 +1,4 @@
+import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import { Send } from ".";
 import Peer from "peerjs";
@@ -57,4 +58,20 @@ it("should send the file when a peer connects", async () => {
   });
 
   await findByText(/\[ ready \]/gi);
+});
+
+it("should display the number of connected clients when sending a file", async () => {
+  const { getByText, findByText } = render(<Send />);
+
+  const uploader = getByText(/\[ drag a file here to upload \]/gi);
+  const mockFile = {} as File;
+
+  fireEvent.drop(uploader, {
+    dataTransfer: {
+      files: [mockFile],
+    },
+  });
+
+  await findByText(/\[ ready \]/gi);
+  await findByText(/\[ uploading \]/gi);
 });
