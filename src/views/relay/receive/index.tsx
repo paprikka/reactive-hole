@@ -1,9 +1,8 @@
-import Peer from "peerjs";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { Button } from "../../../components/button";
 import { LinkButton } from "../../../components/link-button";
-import { servers } from "../servers";
+import { DownloadDescription, useReceiveState } from "./use-receive-state";
 import waiting from "./waiting.png";
 
 const FullScreenContainer = styled.section`
@@ -25,12 +24,6 @@ const FullScreenContainer = styled.section`
 type ReceiveProps = {
   senderPeerID: string;
 };
-
-type Steps =
-  | "waiting-for-approval"
-  | "init-download"
-  | "downloading"
-  | "complete";
 
 type AcceptDownloadProps = { onClick: () => void };
 const AcceptDownload: FC<AcceptDownloadProps> = ({ onClick }) => (
@@ -57,13 +50,7 @@ const Connecting = () => (
 type CompleteProps = {
   downloadDescriptor: DownloadDescription;
 };
-// const CatPaw = styled.div`
-//   width: 27.4vw;
-//   height: 12.2vw;
-//   background: url(${catPaw});
-//   background-size: contain;
-//   background-repeat: no-repeat;
-// `;
+
 const Complete: FC<CompleteProps> = ({ downloadDescriptor }) => (
   <>
     <FullScreenContainer>
@@ -77,42 +64,8 @@ const Complete: FC<CompleteProps> = ({ downloadDescriptor }) => (
   </>
 );
 
-type DownloadDescription = {
-  objectURL: string;
-  filename: string;
-};
-
 export const Receive: FC<ReceiveProps> = ({ senderPeerID }) => {
-  const [step, setStep] = useState<Steps>("waiting-for-approval");
-  const [
-    downloadDescriptor,
-    setDownloadDescriptor,
-  ] = useState<DownloadDescription>();
-  useEffect(() => {
-    if (!senderPeerID) return;
-    if (step !== "init-download") return;
-
-    const peer = new Peer(servers);
-    peer.on("open", () => {
-      const connection = peer.connect(senderPeerID);
-      connection.on("data", (data) => {
-        if (data.type === "file:before") return setStep("downloading");
-        if ("file" in data) {
-          setDownloadDescriptor({
-            objectURL: URL.createObjectURL(
-              new Blob([data.file], {
-                type: data.filetype as string,
-              })
-            ),
-            filename: data.filename as string,
-          });
-          setStep("complete");
-
-          connection.send({ type: "file:upload-complete" });
-        }
-      });
-    });
-  }, [senderPeerID, step]);
+  const { step, setStep, downloadDescriptor } = useReceiveState(senderPeerID);
 
   if (step === "waiting-for-approval")
     return <AcceptDownload onClick={() => setStep("init-download")} />;
