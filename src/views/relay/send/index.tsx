@@ -52,11 +52,13 @@ export const Send: FC = () => {
             },
           });
 
-          connection.send({
-            file: blob,
-            filename: file.name,
-            filetype: file.type,
-          });
+          setTimeout(() => {
+            connection.send({
+              file: blob,
+              filename: file.name,
+              filetype: file.type,
+            });
+          }, 1000);
         });
 
         connection.on("data", (data) => {
